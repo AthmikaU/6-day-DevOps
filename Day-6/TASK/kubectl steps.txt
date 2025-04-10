@@ -1,0 +1,41 @@
+1.install kubectl using below commnad:
+curl -O https://s3.us-west-2.amazonaws.com/amazon-eks/1.24.11/2023-03-17/bin/linux/amd64/kubectl
+chmod +x ./kubectl
+sudo cp ./kubectl /usr/local/bin
+export PATH=/usr/local/bin:$PATH
+	
+2.kubectl version
+
+3.install AWScli:
+curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+unzip awscliv2.zip
+sudo ./aws/install
+
+4.install the git:
+sudo yum install git -y
+
+5.git clone https://github.com/N4si/K8s-voting-app.git	
+
+Step4:adds-on EBSCSIDriver under EKScluster
+
+Step:5
+Creating node groups(node1 and node2) under EKScluster(masternode)
+IAM role under nodegroup is:
+use case-ec2
+	*AmazonEC2ContainerRegistryReadOnly
+	*AmazonEKS_CNI_Policy
+	*AmazonEKSWorkerNodePolicy
+	*AmazonEBSCSIDriverPolicy
+		-Ex:EKSNoderole
+
+*kubectl get nods
+	you can see the error
+	
+*aws eks update-kubeconfig --name cluster-1 --region ap-south-1
+	
+
+*kubectl get nodes
+	you can see unauthorized
+	
+create Access key and do aws configure in server
+ then check "kubectl get nodes"

@@ -1,0 +1,229 @@
+01/04/2025 - Docker
+---------------------
+
+UKH@Desktop-ATHMIKA MINGW64 ~ (master)
+$ pwd
+/c/Users/UKH
+
+UKH@Desktop-ATHMIKA MINGW64 ~ (master)
+$ cd /c/Users/UKH/Desktop
+
+UKH@Desktop-ATHMIKA MINGW64 ~/Desktop (master)
+$ mkdir microservices-app
+
+UKH@Desktop-ATHMIKA MINGW64 ~/Desktop (master)
+$ cd microservices-app
+
+UKH@Desktop-ATHMIKA MINGW64 ~/Desktop/microservices-app (master)
+$ mkdir order_service
+
+UKH@Desktop-ATHMIKA MINGW64 ~/Desktop/microservices-app (master)
+$ mkdir user_service
+
+UKH@Desktop-ATHMIKA MINGW64 ~/Desktop/microservices-app (master)
+$ touch docker-compose.yml
+
+UKH@Desktop-ATHMIKA MINGW64 ~/Desktop/microservices-app (master)
+$ ls
+docker-compose.yml  order_service/  user_service/
+
+---------------------------------------------------------------------
+
+
+
+UKH@Desktop-ATHMIKA MINGW64 ~/Desktop/microservices-app (master)
+$ cd order_service
+
+UKH@Desktop-ATHMIKA MINGW64 ~/Desktop/microservices-app/order_service (master)
+$ touch Dockerfile
+
+UKH@Desktop-ATHMIKA MINGW64 ~/Desktop/microservices-app/order_service (master)
+$ touch app.py
+
+UKH@Desktop-ATHMIKA MINGW64 ~/Desktop/microservices-app/order_service (master)
+$ touch requirements.txt
+
+UKH@Desktop-ATHMIKA MINGW64 ~/Desktop/microservices-app/order_service (master)
+$ ls
+app.py  Dockerfile  requirements.txt
+--------------------------------------------------------------------------------
+UKH@Desktop-ATHMIKA MINGW64 ~/Desktop/microservices-app/order_service (master)
+$ cd ..
+
+UKH@Desktop-ATHMIKA MINGW64 ~/Desktop/microservices-app (master)
+$ cd user_service
+
+UKH@Desktop-ATHMIKA MINGW64 ~/Desktop/microservices-app/user_service (master)
+$ touch Dockerfile
+
+UKH@Desktop-ATHMIKA MINGW64 ~/Desktop/microservices-app/user_service (master)
+$ touch app.py
+
+UKH@Desktop-ATHMIKA MINGW64 ~/Desktop/microservices-app/user_service (master)
+$ touch requirements.txt
+
+UKH@Desktop-ATHMIKA MINGW64 ~/Desktop/microservices-app/user_service (master)
+$ ls -l
+total 0
+-rw-r--r-- 1 UKH 197121 0 Apr  1 13:50 app.py
+-rw-r--r-- 1 UKH 197121 0 Apr  1 13:50 Dockerfile
+-rw-r--r-- 1 UKH 197121 0 Apr  1 13:50 requirements.txt
+-------------------------------------------------------------------------------
+UKH@Desktop-ATHMIKA MINGW64 ~/Desktop/microservices-app/user_service (master)
+$ nano Dockerfile
+
+UKH@Desktop-ATHMIKA MINGW64 ~/Desktop/microservices-app/user_service (master)
+$ nano app.py
+
+UKH@Desktop-ATHMIKA MINGW64 ~/Desktop/microservices-app/user_service (master)
+$ nano requirements.txt
+------------------------------------------------------------------------------
+
+
+content
+
+-----------------------------------------------------------------------------
+UKH@Desktop-ATHMIKA MINGW64 ~/Desktop/microservices-app/user_service (master)
+$ cd ..
+
+UKH@Desktop-ATHMIKA MINGW64 ~/Desktop/microservices-app (master)
+$ cd order_service
+
+UKH@Desktop-ATHMIKA MINGW64 ~/Desktop/microservices-app/order_service (master)
+$ nano Dockerfile
+
+UKH@Desktop-ATHMIKA MINGW64 ~/Desktop/microservices-app/order_service (master)
+$ nano app.py
+
+UKH@Desktop-ATHMIKA MINGW64 ~/Desktop/microservices-app/order_service (master)
+$ nano requirements.txt
+---------------------------
+Dockerfile:
+-----------
+FROM python:3.9
+WORKDIR /app
+COPY . .
+RUN pip install --no-cache-dir -r requirements.txt
+EXPOSE 5002
+CMD ["python", "app.py"]
+
+app.py:
+-------
+import requests
+from flask import Flask, jsonify
+
+app = Flask(_name_)
+
+USER_SERVICE_URL = "http://user_service:5001/users/"
+
+@app.route("/orders/<user_id>")
+def get_orders(user_id):
+    user_response = requests.get(USER_SERVICE_URL + user_id)
+    user_data = user_response.json()
+    return jsonify({"user": user_data, "orders": [{"order_id": 101, "item": "Laptop"}]})
+
+if _name_ == "_main_":
+    app.run(host="0.0.0.0", port=5002)
+
+requirements.txt:
+-----------------
+flask
+requests
+------------------------------------------------------------------------------
+
+UKH@Desktop-ATHMIKA MINGW64 ~/Desktop/microservices-app/order_service (master)
+$ cd ..
+
+UKH@Desktop-ATHMIKA MINGW64 ~/Desktop/microservices-app (master)
+$ ls -l
+total 0
+-rw-r--r-- 1 UKH 197121 0 Apr  1 13:45 docker-compose.yml
+drwxr-xr-x 1 UKH 197121 0 Apr  1 13:47 order_service/
+drwxr-xr-x 1 UKH 197121 0 Apr  1 13:50 user_service/
+
+UKH@Desktop-ATHMIKA MINGW64 ~/Desktop/microservices-app (master)
+$ nano docker-compose.yml
+
+--------------------------------------
+docker-compose.yml: 
+-------------------
+services:
+  user_service:
+    build: ./user_service
+    ports:
+      - "5001:5001"
+    networks:
+      - microservices-net
+
+  order_service:
+    build: ./order_service
+    ports:
+      - "5002:5002"
+    depends_on:
+      - user_service
+    networks:
+      - microservices-net
+
+networks:
+  microservices-net:
+------------------------------------------------------
+
+UKH@Desktop-ATHMIKA MINGW64 ~/Desktop/microservices-app (master)
+$ docker-compose build
+Compose now can delegate build to bake for better performances
+Just set COMPOSE_BAKE=true
+[+] Building 1076.1s (19/19) FINISHED                                                                                                                                                         docker:desktop-linux
+ => [user_service internal] load build definition from Dockerfile                                                                                                                                             0.0s
+ => => transferring dockerfile: 326B                                                                                                                                                                          0.0s
+ => [order_service internal] load metadata for docker.io/library/python:3.9                                                                                                                                   5.3s
+ => [user_service internal] load .dockerignore                                                                                                                                                                0.0s
+ => => transferring context: 2B                                                                                                                                                                               0.0s
+ => [order_service 1/4] FROM docker.io/library/python:3.9@sha256:bc2e05bca883473050fc3b7c134c28ab822be73126ba1ce29517d9e8b7f3703b                                                                          1039.4s
+ => => resolve docker.io/library/python:3.9@sha256:bc2e05bca883473050fc3b7c134c28ab822be73126ba1ce29517d9e8b7f3703b                                                                                           0.0s
+ => => sha256:859d4a0f1fd8b03e685b4f3b6f0abfeeb84cca3047f9b87d0a8c8f3c90764365 6.17kB / 6.17kB                                                                                                                0.0s
+ => => sha256:091eb8249475f42de217265c501e0186f0a3ea7490ef7f51458c30db91fb3cac 24.01MB / 24.01MB                                                                                                            370.0s
+ => => sha256:bc2e05bca883473050fc3b7c134c28ab822be73126ba1ce29517d9e8b7f3703b 10.35kB / 10.35kB                                                                                                              0.0s
+ => => sha256:3db46eeb095dbddf83794896233f9ed627746b394587600bf4e8e4c68303a915 2.32kB / 2.32kB                                                                                                                0.0s
+ => => sha256:7cd785773db44407e20a679ce5439222e505475eed5b99f1910eb2cda51729ab 48.47MB / 48.47MB                                                                                                            505.2s
+ => => sha256:255774e0027b72d2327719e78dbad5ad8c9cf446d055e45be7fc149418470bae 64.40MB / 64.40MB                                                                                                            585.2s
+ => => sha256:353e14e5cc47664fba714a7da288001d90427c705494847ac773f5cc08199451 211.35MB / 211.35MB                                                                                                         1024.4s
+ => => sha256:f6d72b00ae7cbea513baa839d4f1bcebb51c434df9602410dfd34bc71e233c8e 6.16MB / 6.16MB                                                                                                              586.2s
+ => => extracting sha256:7cd785773db44407e20a679ce5439222e505475eed5b99f1910eb2cda51729ab                                                                                                                     5.2s
+ => => extracting sha256:091eb8249475f42de217265c501e0186f0a3ea7490ef7f51458c30db91fb3cac                                                                                                                     1.3s
+ => => sha256:6e02a90e58aec58d3d8f4549cb6a82a2ccc1db075b8a26a48fe1d0f065b52d86 19.85MB / 19.85MB                                                                                                            664.7s
+ => => extracting sha256:255774e0027b72d2327719e78dbad5ad8c9cf446d055e45be7fc149418470bae                                                                                                                     5.2s
+ => => sha256:f299e06712452fd49405fe52fb66dc0bbdd14cc8d8342baa8b2741df89dd465d 250B / 250B                                                                                                                  587.2s
+ => => extracting sha256:353e14e5cc47664fba714a7da288001d90427c705494847ac773f5cc08199451                                                                                                                    12.4s
+ => => extracting sha256:f6d72b00ae7cbea513baa839d4f1bcebb51c434df9602410dfd34bc71e233c8e                                                                                                                     0.5s
+ => => extracting sha256:6e02a90e58aec58d3d8f4549cb6a82a2ccc1db075b8a26a48fe1d0f065b52d86                                                                                                                     1.4s
+ => => extracting sha256:f299e06712452fd49405fe52fb66dc0bbdd14cc8d8342baa8b2741df89dd465d                                                                                                                     0.0s
+ => [user_service internal] load build context                                                                                                                                                                0.0s
+ => => transferring context: 93B                                                                                                                                                                              0.0s
+ => [user_service auth] library/python:pull token for registry-1.docker.io                                                                                                                                    0.0s
+ => CACHED [order_service 2/4] WORKDIR /app                                                                                                                                                                   0.7s
+ => [user_service 3/4] COPY . .                                                                                                                                                                               0.1s
+ => [user_service 4/4] RUN pip install --no-cache-dir -r requirements.txt                                                                                                                                    16.2s
+ => [user_service] exporting to image                                                                                                                                                                         0.3s
+ => => exporting layers                                                                                                                                                                                       0.3s
+ => => writing image sha256:0e38b7d25c9f8bde3abe1b1964e9ab07a383c7bd374c96cff8c801521feb6d19                                                                                                                  0.0s
+ => => naming to docker.io/library/microservices-app-user_service                                                                                                                                             0.0s
+ => [user_service] resolving provenance for metadata file                                                                                                                                                     0.0s
+ => [order_service internal] load build definition from Dockerfile                                                                                                                                            0.1s
+ => => transferring dockerfile: 164B                                                                                                                                                                          0.0s
+ => [order_service auth] library/python:pull token for registry-1.docker.io                                                                                                                                   0.0s
+ => [order_service internal] load .dockerignore                                                                                                                                                               0.1s
+ => => transferring context: 2B                                                                                                                                                                               0.0s
+ => [order_service internal] load build context                                                                                                                                                               0.0s
+ => => transferring context: 694B                                                                                                                                                                             0.0s
+ => [order_service 3/4] COPY . .                                                                                                                                                                              0.0s
+ => [order_service 4/4] RUN pip install --no-cache-dir -r requirements.txt                                                                                                                                   12.8s
+ => [order_service] exporting to image                                                                                                                                                                        0.3s
+ => => exporting layers                                                                                                                                                                                       0.3s
+ => => writing image sha256:ea891681e3423baf0aff5928b2ba9b977da143068a8320853bd047bc1dbf0238                                                                                                                  0.0s
+ => => naming to docker.io/library/microservices-app-order_service                                                                                                                                            0.0s
+ => [order_service] resolving provenance for metadata file                                                                                                                                                    0.0s
+[+] Building 2/2
+ ✔ order_service  Built                                                                                                                                                                                       0.0s
+ ✔ user_service   Built                                                                                                                                                                                       0.0s
+------------------------------------------------------------------------------------------------
+

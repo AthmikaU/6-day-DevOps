@@ -1,0 +1,36 @@
+02/04/2025
+
+---------------------------------------------------------------------------
+	Linux file Permissions:
+
+user --> owner of the file
+group --> collection of user with same file permissions
+others --> not a owner not in group
+
+read, write, execute (r, w, x)
+- values :: read = 4, write = 2, execute = 1
+Total value = 7 numeric value.
+
+=> command : ls -l
+
+File types:
+-----------
+regular file = starts with -
+directory file = d
+
+
+-----------------------------------------------------------------
+-rw-r--r-- 
+
+=> - regular file
+=> rw- (read, write, no permission) --> 4+2 = 6
+=> r-- (read, no perm, no perm) --> 4+0+0 = 4
+=> r-- (same as above)
+
+Total value = 644
+
+---------------------
+777 => all permissions (r, w, x)
+
+------------------------------------------
+To remove all perm => chmod 700 f1

@@ -1,0 +1,170 @@
+01/04/2025 more explantions : Kubernetes
+-----------------------------------------------
+- what is Kubernetes?
+open-source container orchestration platform used to automate the deployment, scaling, and management of containerized applications
+
+
+=> A container orchestration tool that manages and scales containerized applications.
+=> Automates deployment, scaling, and management of containerized applications across multiple servers.
+
+=> Kubernetes can use Docker as a container runtime
+---------------------------------------------------
+- what are components of K8s?
+
+= Control Plane (Master Node) Components :
+- These components manage and control the cluster.
+
+1. API Server (kube-apiserver) :
+
+-Acts as the frontend for Kubernetes.
+-Exposes the Kubernetes API and handles requests from kubectl, CLI, and UI.
+-Validates requests and forwards them to relevant components.
+
+2. etcd (Database) :
+
+-A key-value store that stores all cluster data.
+-Stores configuration, status, and metadata of the cluster.
+
+3. Scheduler (kube-scheduler):
+
+-Assigns workloads (pods) to worker nodes.
+-Evaluates node resources (CPU, memory, etc.) and ensures efficient scheduling.
+----------------------
+= Worker Node Components :
+- These components handle application workloads.
+
+1. Kubelet :
+
+-An agent running on each worker node.
+-Communicates with the API server and ensures the assigned pods are running correctly.
+-Manages pod lifecycle.
+
+2. Kube-Proxy : 
+
+-Manages network communication inside the cluster.
+-Ensures proper routing of network traffic between pods.
+
+3. Container Runtime (Docker, containerd, CRI-O, etc.) :
+
+-Runs containerized applications inside the pods.
+-Kubernetes supports multiple container runtimes.
+
+
+--------------------------------------------------
+- What is a cluster?
+=> group of servers, which contains master nodes and worker nodes.
+=> DevOps engineer / developer can manage -------
+=> Masternode manages worker node
+=> Master nodes assign tasks to worker nodes (Worker Nodes: Execute workloads/tasks (run applications))
+=> Using cluster ensures the high-availability (if 1 server is not available, another will be available)
+
+- etcg : database
+	-A key-value store that stores all cluster data.
+	-Stores configuration, status, and metadata of the cluster.
+
+
+- kubelets : agent that runs on each worker node in a Kubernetes cluster. 
+	    Its main job is to ensure that the containers inside pods are running as expected.
+
+- kube-proxy : handles networking between clusters (masternode <--> worker node )
+
+- Pods : The smallest deployable unit in Kubernetes.
+         Can contain one or multiple containers that share networking and storage.
+	 Runs applications inside worker nodes.
+
+- kube schedular : Assigns pods to worker nodes based on resource availability.
+
+- 
+
+==================================================================================================
+
+- go to website => Elastic Kubernetes Service => cluster -> create cluster -> give cluster name -> custom configuration -> version std : standard -> Amazon EBS CSI Controller
+
+
+- creting master node ::
+- go inside ur cluster : 
+- add-ons -> u can see no of pods
+- compute ->
+
+
+- EC2 -> launch instance -> athmika-masternode -> amazon linux -> no key pair -> network settings : select existing = default -> advanced details : IAM instance profile : select yours -> launch instance.
+- created master node -> click on blank instances -> security -> check security grps -> copy paste instance id -> rename (worker grp x2 )
+- connect master node
+-----------------------------------------------------
+1.install kubectl using below commnad:
+curl -O https://s3.us-west-2.amazonaws.com/amazon-eks/1.24.11/2023-03-17/bin/linux/amd64/kubectl
+chmod +x ./kubectl
+sudo cp ./kubectl /usr/local/bin
+export PATH=/usr/local/bin:$PATH
+	
+2.kubectl version
+
+3.install AWScli:
+curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+unzip awscliv2.zip
+sudo ./aws/install
+
+4.install the git:
+sudo yum install git -y
+
+5.git clone https://github.com/N4si/K8s-voting-app.git	
+
+Step4:adds-on EBSCSIDriver under EKScluster
+
+Step:5
+Creating node groups(node1 and node2) under EKScluster(masternode)
+IAM role under nodegroup is:
+use case-ec2
+	*AmazonEC2ContainerRegistryReadOnly
+	*AmazonEKS_CNI_Policy
+	*AmazonEKSWorkerNodePolicy
+	*AmazonEBSCSIDriverPolicy
+		-Ex:EKSNoderole
+
+*kubectl get nods
+	you can see the error
+	
+*aws eks update-kubeconfig --name cluster-1 --region ap-south-1
+	(aws eks update-kubeconfig --name athmika-cluster --region us-east-1 )
+
+*kubectl get nodes
+	you can see unauthorized
+	
+create Access key and do aws configure in server
+ then check "kubectl get nodes"
+--------------------------------------------------------------------------
+AKIATQPD7SLLCVE5K66Z
+6/5VD654KEZefbsqx8XdO/c7BEPJQlwD6mCABU6x
+
+Access Key
+----------------------------------------
+[ec2-user@ip-172-31-80-193 ~]$ history
+    1  kubectl version
+    2  curl -O https://s3.us-west-2.amazonaws.com/amazon-eks/1.24.11/2023-03-17/bin/linux/amd64/kubectl
+    3  chmod +x ./kubectl
+    4  sudo cp ./kubectl /usr/local/bin
+    5  curl -O https://s3.us-west-2.amazonaws.com/amazon-eks/1.24.11/2023-03-17/bin/linux/amd64/kubectl
+    6  chmod +x ./kubectl
+    7  sudo cp ./kubectl /usr/local/bin
+    8  export PATH=/usr/local/bin:$PATH
+    9  kubectl version
+   10  curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+   11  unzip awscliv2.zip
+   12  sudo ./aws/install
+   13  sudo yum install git -y
+   14  git --version
+   15  git clone https://github.com/N4si/K8s-voting-app.git
+   16  ls
+   17  cd K8s-voting-app
+   18  ls
+   19  cd manifests
+   20  ls
+   21  cd ../..
+   22  pwd
+   23  kubectl get nods
+   24  aws eks update-kubeconfig --name athmika-cluster --region us-east-1
+   25  aws configure
+   26  aws eks update-kubeconfig --name athmika-cluster --region us-east-1
+   27  history
+-----------------------------------------------------------------------
+

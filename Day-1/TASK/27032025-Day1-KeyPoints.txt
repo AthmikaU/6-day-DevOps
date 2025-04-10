@@ -1,0 +1,180 @@
+27/03/2025 - DevOps
+
+- terraform, Jenkins, docker, kubernetes & installations, ansible, nagios
+
+1. What is OS?
+- interface between hardware and software.
+
+2. What is cloud computing?
+- On demand delivery of IT resources over the internet. You can access technical resources such as storage, databases, compute, networking, security with pay as you go.
+
+3. Cloud Providers in market?
+- AWS
+- Microsoft Azure
+- Google Cloud Platform
+
+4. SDLC => Software Development Life Cycle, is a structured step-by-step process, that development teams use to create high quality, cost effective, and secured software.
+
+5. Waterfall Model, Agile methodology
+
+6. Applications to download ->
+- mobaXterm (free, installer edition)
+aws console login
+
+7. Components of Server
+- OS(Linux/win/mac)
+- RAM(6/8/12/16/.. GB)
+- ROM(hdd/sdd)
+- Networking
+
+8. EC2 => (amazon)Elastic Compute Cloud
+
+9. Commands
+- sudo su
+- ls => list all the files and directories(folders)
+- touch => is a command to create empty files (eg: 'touch newfile')
+- cat > newfile =>(to write content into 'newfile')
+- clear
+- cat newfile => (to read the content in file)
+- rm newfile => (remove file) 
+
+- mkdir dir1 => (to create an empty directory)
+- cd dir1 => (change directory/ go inside child dir)
+- cd .. => (exit from directory)
+- rmdir => (is a command to delete empty directory, eg: rmdir directoryname)
+- rm -r => (is a command to delete directory with files)
+
+- ls -l => (list files and directories with permissions)
+- pwd => print working directory / present working directory (path)
+- history => (u can see list of commands previously executed)
+- cd ../.. => (come out of 2 directories together)
+
+10. What is DevOps?
+- DevOps is a set of practices, principles, and cultural philosophies that aim to bridge the gap between software development and operations.
+- The goal of DevOps is to shorten the SDLC, improve collaboration between development and operations team and deliver high-quality software faster and more efficiently.
+- Key elements: 
+	1. Automation, 
+	2. CI(Continuous Integration), 
+	3. CD(continuous Development/deployment), 
+	4. Collaboration/Communication, 
+	5. Monitoring
+
+11. Waterfall Model ::
+- It has distinct goals for each phase of development.
+- Requirements, Analysis, Design, Coding, Testing, Operations
+- has limitations(5) ::
+	1. Once an application is in testing stage, it is very difficult to go back and change something that was not well-thought out in the concept stage.
+	2. 
+
+12. Agile Methodology ::
+- DevOps is a culture, fostering collaboration amongst all participants involved in the development and maintenance of software. Agile can be described as a development methodology designed to maintain productivity and drive releases with the common reality of changing needs.
+- Plan, (Design, Develop, Test, Deploy, Review), Launch
+- (cycle)
+== example of limitation: 
+- dev team : code works in laptop
+- op team : there is some problem w code, does not work in production
+
+13. Why DevOps Matters?
+- Bcoz, It is a s/w development and operations approach that enables faster development of new products and easier maintenance of existing deployments.
+
+14. Benefits :
+- Speed
+- Rapid Delivery
+- Reliability
+- Improved Collaboration
+- Scale
+- Security.
+
+15. CI
+-1- Continuous development (plan, code)
+-2- Continuous Testing (build, test)
+-3- Continuous Deployment (release, deploy)
+-4- Continuous Monitoring (operate, monitor)
+
+16. EC2
+
+17. What is a server?
+- Server is a powerful computer/system that provides services or data to other computers known as Clients.
+- Clients, over a internet
+- Servers are designed to manage, store, process data and they play a critical role in handling request, delivering responses within a network.
+
+- Types of servers
+1. web server :: delivers webpages to user's browser :: Nginx,
+2. File Servers :: Stores and manages files that client and access and share over a network. 
+3. Database server :: Manage database and provide access to clients for reading, writing, updating data.
+ eg: MySQL, MongoDB
+4. Mail Server :: Handles sending, receiving and storage of emails.
+eg : Microsoft exchange
+
+
+diagram:
+---------
+Multiple Clients -> Internet <- Server
+
+
+----------------------------------------------
+18. Server Components ::
+OS, RAM, CPU, Storage, NIC(Network Interface Card)
+
+---------------------------------------------
+
+EC2 Configuration ::
+
+steps:
+------
+1. mob loc, launch instance
+2. give name of server
+3. Application & OS Images (Amazon Machine Image)
+	- select windows os
+4. instance type : choose -- gb ram (16 for high speed)
+	- choose number of  CPUs, and RAM
+5. Key Pair name, RSA, .pem
+	- keypair : used to connect securely to instance
+6. Networking :	
+	- firewalls
+	- VPC : cirtual private cloud
+	- subnets
+	- route tables
+	- NAT
+	- Internet gateway
+	- Elastic IPS 
+7. Configure storage ::
+	- EBS (Elastic Block Store)
+	- EBS is similar to hard disk
+	- Persistant Block level storage
+	- Can create new volumes and attach to running instance
+8. (Create instance) => Launch instance : web server / windows server
+
+9. connecting to instance => RDP client
+download remote desk file, get password.
+
+
+git bash => ssh ec2@
+
+--------------
+send files from server to GitHub repo =>
+
+sudo yum update
+sudo yum install git -y
+touch file
+
+sudo su
+git init 
+git add .
+git commit
+git remote add origin ..
+git push origin master
+
+
+=====================
+how to generate key => GitHub
+
+settings=> dev settings => personal access tokens => classic =>
+generate new token -> classic -> any name => 
+
+repo, dlt repo, 
+
+generate token
+
+=> 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
+

@@ -1,0 +1,340 @@
+29/03/2025 
+
+AUTO SCALING
+==============
+
+- Search EC2 -> instances -> launch template -> create launch template
+- give name, provide auto scaling, choose amazon Linux, instance type : t2.micro, no key pair
+- create launch template
+
+- ec2 dashboard
+
+-auto scaling grp -> create -> name:athmika-asg
+- choose templaye -> next
+- select any 3 regions -> next x2 (no change)
+- health check : 60s.
+- scaling: desired:4, min: 1, max:6 -> nextx3.
+- Review : create auto scaling instance.
+--- automatically instance is created---
+
+- select instance -> actions -> delete.
+
+=> download Microsoft Authenticator in mobile.
+- used for multi factor authentication
+
+=> EC2 website -> top corner -> clck on security credentials.
+- assign MFA
+- device : mobile
+- aurhenticator app -> next -> gen. QR code -> scan it in mobile.
+- enter 2 codes -
+-> logout
+- login -> enter MFA -> go to security credentials -> remove MFA
+
+-----------------------------------------------------------------------------
+
+SIMPLE STORAGE SERVICE
+
+Storage options in AWS:
+1. Object storage : s3(simple storage service)
+	- s3 is durable and scalable
+	- s3 is pay-as-you-go
+	- s3 used to upload files/images/movies/pdf files/CSV files/folders etc.
+	- s3 called bucket
+	- s3 bucket size is 5TB, can create each account 100 buckets.
+	- s3 bucket can keep public and also private
+=> when you create s3bucket follow the steps(naming rules) :
+- global unique
+- min 3 characters and max 63 characters
+- no special characters/no caps/no spaces.
+---------------------------------------
+Search s3 -> 
+- create bucket
+- bucket versioning : enable (to restore)
+
+- select ur bucket -> create folder -> upload images 
+
+-> select 1 image -> copy url -> paste -> access denied (private)
+
+https://athmika22.s3.us-east-1.amazonaws.com/images/dp.png
+
+- convert to public
+
+= bucket -> 
+- permissions -> disselect block -> close 
+- edit policies -> -> copy arn -> aws policy generator -> policy:s3 ->  * paste arn : arn/* ->
+
+
+Delete bucket -> empty and delete.
+------------------------------------------------
+CLI => COMMAND LINE INTERFACE ::
+
+cmd prompt
+
+> aws --version
+
+- download from google (AWS CLI) -> windows -> run as administrator -> msiexec.exe /i https://awscli.amazonaws.com/AWSCLIV2.msi
+
+aws-cli/2.25.6 Python/3.12.9 Windows/11 exe/AMD64
+
+- AWS Configuration ::
+
+>aws configure
+(enter details from aws account -> security credentials(top right) -> 
+
+C:\Users\UKH>aws configure
+AWS Access Key ID [None]: AKIATQPD7SLLKDT6XKE7
+AWS Secret Access Key [None]: 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
+Default region name [None]: ap-south-1
+Default output format [None]: text
+
+C:\Users\UKH>aws s3api create-bucket --bucket athmika2 --region ap-south-1 --create-bucket-configuration LocationConstraint=ap-south-1
+http://athmika2.s3.amazonaws.com/
+
+C:\Users\UKH>aws s3 ls
+2025-03-29 15:11:41 athmika2
+
+C:\Users\UKH>aws s3api delete-bucket --bucket athmika2 --region ap-south-1
+
+C:\Users\UKH>aws s3 ls
+
+-------------------------------------------------------------
+TERRAFORM::
+
+open git bash
+
+- google -> download (https://developer.hashicorp.com/terraform/install?product_intent=terraform) => AMD64
+- Terraform : used to create all files in single ______
+
+
+$ terraform init
+Terraform initialized in an empty directory!
+
+The directory has no Terraform configuration files. You may begin working
+with Terraform immediately by creating Terraform configuration files.
+
+$ touch athmika.tf
+
+$ terraform init
+
+UKH@Desktop-ATHMIKA MINGW64 ~ (master)
+$ terraform validate
+Success! The configuration is valid.
+
+> nano athmika.tf => terraform will give code
+
+<paste it>
+provider "aws" { region = "ap-south-1" }
+resource "aws_s3_bucket" "my_bucket" { bucket = "athmika22" acl = "private" }
+
+ctrl x then y and enter.
+
+provider "aws" { region = "ap-south-1" }
+resource "aws_s3_bucket" "my_bucket" {
+  bucket = "athmika22"
+  acl    = "private"
+}
+resource "aws_instance" "my_instance" {
+  ami           = "ami-0c55b159cbfafe1f0" 
+  instance_type = "t2.micro"
+  key_name      = "" 
+
+  tags = {
+    Name = "MyEC2Instance"
+  }
+}
+
+--------------------------------------------------------------
+2. Block Storage : EBS(elastic block storage)
+3. File storage : EFS(elastic file system)
+
+====================================================================================================
+
+DOCKER - uses to break monolathic to microservices. 
+-------
+
+- monolatic architecure (having multiple micro services) connected to-> server
+------------------------------------------------------
+
+Go to EC2 on website -> 
+
+1. create amazon linux instance => connect
+2. sudo su, yum update, yum install docker -y, 
+3. docker --version
+4. service start docker
+5. docker info
+6. docker pull ubuntu
+
+[root@ip-172-31-31-210 ec2-user]# docker --version
+Docker version 25.0.8, build 0bab007
+[root@ip-172-31-31-210 ec2-user]# ^C
+[root@ip-172-31-31-210 ec2-user]# service docker start
+Redirecting to /bin/systemctl start docker.service
+[root@ip-172-31-31-210 ec2-user]# docker images
+REPOSITORY   TAG       IMAGE ID   CREATED   SIZE
+[root@ip-172-31-31-210 ec2-user]# docker pull ubuntu
+Using default tag: latest
+latest: Pulling from library/ubuntu
+5a7813e071bf: Pull complete 
+Digest: sha256:72297848456d5d37d1262630108ab308d3e9ec7ed1c3286a32fe09856619a782
+Status: Downloaded newer image for ubuntu:latest
+docker.io/library/ubuntu:latest
+[root@ip-172-31-31-210 ec2-user]# docker images
+REPOSITORY   TAG       IMAGE ID       CREATED        SIZE
+ubuntu       latest    a04dc4851cbc   2 months ago   78.1MB
+[root@ip-172-31-31-210 ec2-user]# docker ps -a
+CONTAINER ID   IMAGE     COMMAND   CREATED   STATUS    PORTS     NAMES
+[root@ip-172-31-31-210 ec2-user]# docker ps
+CONTAINER ID   IMAGE     COMMAND   CREATED   STATUS    PORTS     NAMES
+
+
+7. docker run redis
+
+8. docker ps -a (to show collections of container : all?)
+ > docker ps (running container)
+ > docker images
+
+9. docker run alpine
+=============================================================================================
+[root@ip-172-31-31-210 ec2-user]# docker --version
+Docker version 25.0.8, build 0bab007
+[root@ip-172-31-31-210 ec2-user]# ^C
+[root@ip-172-31-31-210 ec2-user]# service docker start
+Redirecting to /bin/systemctl start docker.service
+[root@ip-172-31-31-210 ec2-user]# docker images
+REPOSITORY   TAG       IMAGE ID   CREATED   SIZE
+[root@ip-172-31-31-210 ec2-user]# docker pull ubuntu
+Using default tag: latest
+latest: Pulling from library/ubuntu
+5a7813e071bf: Pull complete 
+Digest: sha256:72297848456d5d37d1262630108ab308d3e9ec7ed1c3286a32fe09856619a782
+Status: Downloaded newer image for ubuntu:latest
+docker.io/library/ubuntu:latest
+[root@ip-172-31-31-210 ec2-user]# docker images
+REPOSITORY   TAG       IMAGE ID       CREATED        SIZE
+ubuntu       latest    a04dc4851cbc   2 months ago   78.1MB
+[root@ip-172-31-31-210 ec2-user]# docker ps -a
+CONTAINER ID   IMAGE     COMMAND   CREATED   STATUS    PORTS     NAMES
+[root@ip-172-31-31-210 ec2-user]# docker ps
+CONTAINER ID   IMAGE     COMMAND   CREATED   STATUS    PORTS     NAMES
+[root@ip-172-31-31-210 ec2-user]# docker run redis
+Unable to find image 'redis:latest' locally
+latest: Pulling from library/redis
+6e909acdb790: Pull complete 
+d9b98f603d6b: Pull complete 
+513666b05c81: Pull complete 
+764e7fbfdb05: Pull complete 
+2884ccae34c1: Pull complete 
+df4660a56a60: Pull complete 
+4f4fb700ef54: Pull complete 
+b138a3179b82: Pull complete 
+Digest: sha256:bd41d55aae1ecff61b2fafd0d66761223fe94a60373eb6bb781cfbb570a84079
+Status: Downloaded newer image for redis:latest
+1:C 29 Mar 2025 11:16:35.375 # WARNING Memory overcommit must be enabled! Without it, a background save or replication may fail under low memory condition. Being disabled, it can also cause failures without low memory condition, see https://github.com/jemalloc/jemalloc/issues/1328. To fix this issue add 'vm.overcommit_memory = 1' to /etc/sysctl.conf and then reboot or run the command 'sysctl vm.overcommit_memory=1' for this to take effect.
+1:C 29 Mar 2025 11:16:35.376 # WARNING Your system is configured to use the 'xen' clocksource which might lead to degraded performance. Check the result of the [slow-clocksource] system check: run 'redis-server --check-system' to check if the system's clocksource isn't degrading performance.
+1:C 29 Mar 2025 11:16:35.376 * oO0OoO0OoO0Oo Redis is starting oO0OoO0OoO0Oo
+1:C 29 Mar 2025 11:16:35.376 * Redis version=7.4.2, bits=64, commit=00000000, modified=0, pid=1, just started
+1:C 29 Mar 2025 11:16:35.377 # Warning: no config file specified, using the default config. In order to specify a config file use redis-server /path/to/redis.conf
+1:M 29 Mar 2025 11:16:35.377 * monotonic clock: POSIX clock_gettime
+1:M 29 Mar 2025 11:16:35.378 * Running mode=standalone, port=6379.
+1:M 29 Mar 2025 11:16:35.378 * Server initialized
+1:M 29 Mar 2025 11:16:35.379 * Ready to accept connections tcp
+^C1:signal-handler (1743247085) Received SIGINT scheduling shutdown...
+1:M 29 Mar 2025 11:18:05.309 * User requested shutdown...
+1:M 29 Mar 2025 11:18:05.309 * Saving the final RDB snapshot before exiting.
+1:M 29 Mar 2025 11:18:05.314 * DB saved on disk
+1:M 29 Mar 2025 11:18:05.314 # Redis is now ready to exit, bye bye...
+[root@ip-172-31-31-210 ec2-user]# docker ps -a
+CONTAINER ID   IMAGE     COMMAND                  CREATED              STATUS                      PORTS     NAMES
+1a0721fd1396   redis     "docker-entrypoint.s…"   About a minute ago   Exited (0) 12 seconds ago             naughty_kapitsa
+[root@ip-172-31-31-210 ec2-user]# docker images
+REPOSITORY   TAG       IMAGE ID       CREATED        SIZE
+ubuntu       latest    a04dc4851cbc   2 months ago   78.1MB
+redis        latest    ad4b31aa2de6   2 months ago   117MB
+[root@ip-172-31-31-210 ec2-user]# docker run alpine
+Unable to find image 'alpine:latest' locally
+latest: Pulling from library/alpine
+f18232174bc9: Pull complete 
+Digest: sha256:a8560b36e8b8210634f77d9f7f9efd7ffa463e380b75e2e74aff4511df3ef88c
+Status: Downloaded newer image for alpine:latest
+[root@ip-172-31-31-210 ec2-user]# docker images
+REPOSITORY   TAG       IMAGE ID       CREATED        SIZE
+alpine       latest    aded1e1a5b37   6 weeks ago    7.83MB
+ubuntu       latest    a04dc4851cbc   2 months ago   78.1MB
+redis        latest    ad4b31aa2de6   2 months ago   117MB
+[root@ip-172-31-31-210 ec2-user]# docker ps -a
+CONTAINER ID   IMAGE     COMMAND                  CREATED          STATUS                          PORTS     NAMES
+de43f460d31e   alpine    "/bin/sh"                36 seconds ago   Exited (0) 35 seconds ago                 funny_meninsky
+1a0721fd1396   redis     "docker-entrypoint.s…"   2 minutes ago    Exited (0) About a minute ago             naughty_kapitsa
+[root@ip-172-31-31-210 ec2-user]# docker ps
+CONTAINER ID   IMAGE     COMMAND   CREATED   STATUS    PORTS     NAMES
+[root@ip-172-31-31-210 ec2-user]# docker run -it ubuntu
+root@524f9fe5e628:/# exit
+exit
+[root@ip-172-31-31-210 ec2-user]# docker images
+REPOSITORY   TAG       IMAGE ID       CREATED        SIZE
+alpine       latest    aded1e1a5b37   6 weeks ago    7.83MB
+ubuntu       latest    a04dc4851cbc   2 months ago   78.1MB
+redis        latest    ad4b31aa2de6   2 months ago   117MB
+[root@ip-172-31-31-210 ec2-user]# docker ps
+CONTAINER ID   IMAGE     COMMAND   CREATED   STATUS    PORTS     NAMES
+[root@ip-172-31-31-210 ec2-user]# docker ps -a
+CONTAINER ID   IMAGE     COMMAND                  CREATED              STATUS                          PORTS     NAMES
+524f9fe5e628   ubuntu    "/bin/bash"              49 seconds ago       Exited (0) 26 seconds ago                 hopeful_sammet
+de43f460d31e   alpine    "/bin/sh"                About a minute ago   Exited (0) About a minute ago             funny_meninsky
+1a0721fd1396   redis     "docker-entrypoint.s…"   4 minutes ago        Exited (0) 2 minutes ago                  naughty_kapitsa
+[root@ip-172-31-31-210 ec2-user]# docker start hopeful_sammet
+hopeful_sammet
+[root@ip-172-31-31-210 ec2-user]# docker attach hopeful_sammet
+root@524f9fe5e628:/# exit
+exit
+[root@ip-172-31-31-210 ec2-user]# docker ps -a
+CONTAINER ID   IMAGE     COMMAND                  CREATED         STATUS                      PORTS     NAMES
+524f9fe5e628   ubuntu    "/bin/bash"              3 minutes ago   Exited (0) 12 seconds ago             hopeful_sammet
+de43f460d31e   alpine    "/bin/sh"                4 minutes ago   Exited (0) 4 minutes ago              funny_meninsky
+1a0721fd1396   redis     "docker-entrypoint.s…"   6 minutes ago   Exited (0) 5 minutes ago              naughty_kapitsa
+[root@ip-172-31-31-210 ec2-user]# docker ps
+CONTAINER ID   IMAGE     COMMAND   CREATED   STATUS    PORTS     NAMES
+[root@ip-172-31-31-210 ec2-user]# docker ps
+CONTAINER ID   IMAGE     COMMAND   CREATED   STATUS    PORTS     NAMES
+[root@ip-172-31-31-210 ec2-user]# history
+    1  yum update
+    2  yum install docker -y
+    3  docker --version
+    4  service docker start
+    5  docker images
+    6  docker pull ubuntu
+    7  docker images
+    8  docker ps -a
+    9  docker ps
+   10  docker run redis =>(ctrl+c)
+   11  docker ps -a
+   12  docker images
+   13  docker run alpine
+   14  docker images
+   15  docker ps -a
+   16  docker ps
+   17  docker run -it ubuntu =>(exit)
+   18  docker images
+   19  docker ps
+   20  docker ps -a
+   21  docker start hopeful_sammet
+   22  docker attach hopeful_sammet
+   23  docker ps -a
+   24  docker ps
+   25  docker ps
+   26  history
+[root@ip-172-31-31-210 ec2-user]#
+
+===================================================================================================
+
+Download dockerdesktop :
+
+https://docs.docker.com/desktop/setup/install/windows-install/  (1st one = x86_64)
+
+----------------------------------------------------
+
+
+
+
+
+====================================================================================================

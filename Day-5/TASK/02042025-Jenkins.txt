@@ -1,0 +1,114 @@
+instance connected:
+
+--------------------------------
+[ec2-user@ip-172-31-80-58 ~]$ sudo su
+[root@ip-172-31-80-58 ec2-user]# touch f1
+[root@ip-172-31-80-58 ec2-user]# mkdir n1
+[root@ip-172-31-80-58 ec2-user]# ls -l
+total 0
+-rw-r--r--. 1 root root 0 Apr  2 08:49 f1
+drwxr-xr-x. 2 root root 6 Apr  2 08:49 n1
+
+permission only for read for others :
+[root@ip-172-31-80-58 ec2-user]# chmod 744 f1
+[root@ip-172-31-80-58 ec2-user]# ls -l
+total 0
+-rwxr--r--. 1 root root 0 Apr  2 08:49 f1
+drwxr-xr-x. 2 root root 6 Apr  2 08:49 n1
+[root@ip-172-31-80-58 ec2-user]# chmod 044 f1
+[root@ip-172-31-80-58 ec2-user]# ls -l
+total 0
+----r--r--. 1 root root 0 Apr  2 08:49 f1
+drwxr-xr-x. 2 root root 6 Apr  2 08:49 n1
+[root@ip-172-31-80-58 ec2-user]# chmod 001 f1
+[root@ip-172-31-80-58 ec2-user]# ls -l
+total 0
+---------x. 1 root root 0 Apr  2 08:49 f1
+drwxr-xr-x. 2 root root 6 Apr  2 08:49 n1
+[root@ip-172-31-80-58 ec2-user]# ^C
+[root@ip-172-31-80-58 ec2-user]# chmod 070 f1
+[root@ip-172-31-80-58 ec2-user]# ls -l
+total 0
+----rwx---. 1 root root 0 Apr  2 08:49 f1
+drwxr-xr-x. 2 root root 6 Apr  2 08:49 n1
+-------------------------------------------------------------------------------------------
+
+- Search EKS => create cluster => custom configuration => give name => create IAM role =>
+=> CREATE ROLE ::
+- AWS service -> use case : EKS - Auto Cluster -> next -> Add permissions : 
+
+
+-> cluster created. 
+checking pods -> goto resources
+
+
+
+===========================
+- create master node (launch instance) => select existing group. IAdvanced settings => IAM instance => select your cluster.
+- connect master node.
+- then follow yesterday's steps, kubectl and all.
+- u will get 2 pods.
+---------------------------------------------------------------------------------------------------
+
+Jenkins
+--------
+
+- open-souce, automation (tool/)server used for implementing CI/CD pipelines. Automating tasks like building, testing, and deploying software, leading to faster delivery software life-cycle.
+- Jenkins is developed using java.
+- Hudson 
+
+- when u r creating instances in ec2 java dependencies should be compulsorily installed.
+--------------------------------------------------------------------------------------
+- how to integrate in Jenkins, test and deploy it?
+
+--------------------------------------------------------------------------------------
+STEPS TO BE FOLLOWED ::
+
+1)  create ec2 instance with ubuntu AMI (t2.micro)
+- network setings : allow http, https, ssh
+- edit security grp : jenkins-athmika-sg
+- ensure there is a rule for ssh, http, https : anywhere.
+-> add new rule => all traffic, anywhere
+- launch instance.
+------------------------------
+2) connect to Jenkins instance:
+-------------------------------------
+3) install java in ubuntu using commands:
+
+$ sudo apt-get update
+
+$ sudo apt-get install default-jre
+sudo apt install fontconfig openjdk-17-jre
+------------------------------------------------------------------
+4) Install Jenkins in Ubuntu VM with below commands
+
+$ curl -fsSL https://pkg.jenkins.io/debian-stable/jenkins.io-2023.key | sudo tee \
+  /usr/share/keyrings/jenkins-keyring.asc > /dev/null
+
+$ echo deb [signed-by=/usr/share/keyrings/jenkins-keyring.asc] \
+  https://pkg.jenkins.io/debian-stable binary/ | sudo tee \
+  /etc/apt/sources.list.d/jenkins.list > /dev/null
+
+sudo apt-get update
+sudo apt-get install jenkins
+
+// sudo systemctl status jenkins (dont put this command)
+-----------------------------------------------------------------
+5) copy public IP address:8080 in browser => u will get => 
+http://107.21.155.134:8080/login?from=%2F => a jenkins login page.
+------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+
+https://emergingtalent.contentcontroller.com/ScormEngineInterface/dispatch/lti/ltiDispatch.html?studentId=7bd14e74-8177-4c2b-8583-aeb324f4da9f&studentName&redirectOnExitUrl=https%3A%2F%2Fawseducate.instructure.com%2Fcourses%2F909%2Fmodules&config=%7B%22dispatchVersion%22%3A%221%22%2C%22contentUrl%22%3A%22https%3A%2F%2Femergingtalent.contentcontroller.com%2Fapi%2Flaunch%2Fbundle%2Fcontent%2F32418%2F2gopOGe6Pu2p952Tu4eAjoVVYcw5%3Flticlaimssecret%3DO1jM9NkFSbYbnLIau4tzKsacA6JY%26learnerid%3DLEARNER_ID%26fname%3DLEARNER_FNAME%26lname%3DLEARNER_LNAME%26pipeurl%3DPIPE_URL%26redirecturl%3DREDIRECT_URL_REGISTRATION_ARGUMENT%22%2C%22dispatchRoot%22%3A%22https%3A%2F%2Femergingtalent.contentcontroller.com%2FScormEngineInterface%2Fdispatch%2F%22%2C%22preLaunchConfigurationUrl%22%3A%22https%3A%2F%2Femergingtalent.contentcontroller.com%2Fapi%2Flaunch%2Fconfig%2Fbundle%2Fcontent%2F32418%2F2gopOGe6Pu2p952Tu4eAjoVVYcw5%22%7D&ltiOutcomeUrl=https%3A%2F%2Femergingtalent.contentcontroller.com%2FScormEngineInterface%2Fdispatch%2FDispatchRequest.jsp%3FmethodName%3DAssignmentandGradeServices%26tenant%3D336d964b-be51-4a9a-9d42-50ac942f034e%26ltiOutcomeInfo%3Da332fb58-8a7b-4039-bddf-d929bf5d1f59%26score%3D_SCORE_%26ltiState%3D_STATE_
+
+
