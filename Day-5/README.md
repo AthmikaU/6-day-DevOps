@@ -1,6 +1,6 @@
-# Day 5: 02/04/2025
+# DevOps Training - Day 5 
+**Date:** 02/04/2025
 
----
 
 ## Linux File Permissions
 
