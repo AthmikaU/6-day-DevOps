@@ -1,7 +1,8 @@
-# Day 3: 29/03/2025
+# DevOps Training - Day 3  
+**Date:** 29/03/2025
 
-## AUTO SCALING - Hands-On
----
+## Topics Covered
+- Auto Scaling - Hands-On
 
 ### Steps:
 
