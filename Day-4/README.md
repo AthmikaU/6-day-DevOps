@@ -1,6 +1,10 @@
 # DevOps Training - Day 4  
 **Date:** 01/04/2025
 
+## Topics Covered
+- Docker
+- Kubernetes (K8s)
+  
 ## Docker - Microservices Setup
 
 ### Project Setup
