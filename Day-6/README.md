@@ -1,4 +1,8 @@
-# Day 6 - Jenkins Hands-on (03/04/2025)
+# DevOps Training - Day 6 
+**Date:** 03/04/2025
+
+## Topics Covered
+- Jenkins : Hands-On
 
 ## Jenkins Server Setup
 
